@@ -23,27 +23,43 @@ const TaskCard: React.FC<TaskCardProps> = ({todo}) => {
     // Your click handling setShowModalEdit as true
     setShowModalEdit(true);
   };
+  // Extract day, month, and year
+  const endDate = new Date(todo.endDate);
+  const day = endDate.getDate().toString().padStart(2, '0');
+  const month = (endDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = endDate.getFullYear();
+
+  // Create the formatted date string
+  const formattedEndDate = `${day}-${month}-${year}`;
+  // Extract day, month, and year
+  const startDate = new Date(todo.startDate);
+  const startday = startDate.getDate().toString().padStart(2, '0');
+  const startmonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+  const startyear = startDate.getFullYear();
+
+  // Create the formatted date string
+  const formattedStartDate = `${startday}-${startmonth}-${startyear}`;
   return (
     <div className="w-full flex items-center justify-between rounded-full border border-solid border-A3A3B9 py-2 px-2">
       <div className="flex items-center">
         <div className="w-4 h-4 flex-shrink-0 rounded-full border-4 border-solid border-5B6097"></div>
-        <h5 className="text-black font-inter text-sm font-normal">
+        <h5 className="text-black font-inter text-sm font-normal ml-1">
           {" "}
           {todo.title}
         </h5>
       </div>
       <h5 className="text-black font-inter text-sm font-normal">
         {" "}
-        21 - 08 - 2023
+       {formattedStartDate}
       </h5>
       <h5 className="text-black font-inter text-sm font-normal">
         {" "}
-        29 - 08 - 2023
+       {formattedEndDate}
       </h5>
-      <StatusTaskLabel variant="active" children="active" />
+      <StatusTaskLabel variant={todo?.status as "active" | "pending" | "closed"} children={todo?.status as "active" | "pending" | "closed"}/>
       <div className="flex items-center justify-center gap-2">
         <svg
-          className="cursor-pointer"
+          className="cursor-pointer mt-1"
           onClick={handleEdit}
           width="1.5em"
           height="1.5em"
@@ -88,10 +104,12 @@ const TaskCard: React.FC<TaskCardProps> = ({todo}) => {
         </svg>
       </div>
       <ModalConfirmDelete
+      todo={todo}
         showModalDelete={showModalDelete}
         setShowModalDelete={setShowModalDelete}
       />
       <ModalEditTask
+      todo={todo}
         showModalEdit={showModalEdit}
         setShowModalEdit={setShowModalEdit}
       />

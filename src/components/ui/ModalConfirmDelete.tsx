@@ -1,22 +1,28 @@
+import { deleteTodo } from "@/redux/actions/TodoAction";
+import { Todo } from "@/redux/types/type";
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   TEModal,
   TEModalBody,
   TEModalContent,
   TEModalDialog,
   TEModalHeader,
-  TERipple,
 } from "tw-elements-react";
 
 interface ModalConfirmDeleteProps {
   showModalDelete: boolean;
   setShowModalDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  todo: Todo;
 }
 
 const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
   showModalDelete,
   setShowModalDelete,
+  todo,
 }) => {
+  //using for dispatch action from redux action
+  const dispatch = useDispatch();
   return (
     <TEModal show={showModalDelete} setShow={setShowModalDelete} staticBackdrop>
       <TEModalDialog>
@@ -37,7 +43,6 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth="1.5"
                 stroke="currentColor"
                 className="h-6 w-6"
               >
@@ -61,9 +66,8 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
@@ -73,13 +77,17 @@ const ModalConfirmDelete: React.FC<ModalConfirmDeleteProps> = ({
               <button
                 type="button"
                 className="text-white bg-custom5 hover:bg-custom5 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2"
+                onClick={() => dispatch(deleteTodo(todo?.id))}
               >
                 Yes, I'm sure
               </button>
               <button
                 type="button"
                 className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                onClick={() => setShowModalDelete(false)}
+                onClick={() => {
+                  console.log("Closing modal");
+                  setShowModalDelete(false);
+                }}
               >
                 No, cancel
               </button>

@@ -29,6 +29,7 @@ const config: Config = {
       borderColor: {
         "5B6097": "#5B6097",
       },
+      
     },
   },
   plugins: [require("tw-elements-react/dist/plugin.cjs")],

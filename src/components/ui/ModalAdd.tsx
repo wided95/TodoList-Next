@@ -2,7 +2,6 @@
 import { addTodos } from "@/redux/actions/TodoAction";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
 import {
   TERipple,
   TEModal,
@@ -16,9 +15,11 @@ interface ModalAddProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ModalAdd: React.FC<ModalAddProps> = ({ showModal, setShowModal }) => {
+  //using for dispatch action from redux action
   const dispatch=useDispatch();
-  const { addTodo } = bindActionCreators(addTodos, dispatch)as any;
+  //task state using to add task 
   const[task,setTask]=useState({
+    id:Math.random(),
     title:"",
     description:"",
     status:"",
@@ -28,7 +29,7 @@ const ModalAdd: React.FC<ModalAddProps> = ({ showModal, setShowModal }) => {
   })
   return (
     <>
-      <TEModal show={showModal} setShow={setShowModal} staticBackdrop>
+      <TEModal show={showModal} setShow={setShowModal} staticBackdrop data-testid="modal-add">
         <TEModalDialog>
           <TEModalContent>
             <TEModalHeader>
@@ -47,7 +48,6 @@ const ModalAdd: React.FC<ModalAddProps> = ({ showModal, setShowModal }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="h-6 w-6"
                 >
@@ -79,7 +79,7 @@ const ModalAdd: React.FC<ModalAddProps> = ({ showModal, setShowModal }) => {
                     setTask({...task,description:e.target.value})
                   }}
                 />
-                <select  className="border outline-none w-full border-solid border-A3A3B9 rounded-md px-3 py-1 text-A3A3B9" onChange={(e)=>{
+                <select data-testid="status-list" className="border outline-none w-full border-solid border-A3A3B9 rounded-md px-3 py-1 text-A3A3B9" onChange={(e)=>{
                     setTask({...task,status:e.target.value})
                   }}>
                   <option value="">Please choose an status</option>
@@ -105,7 +105,7 @@ const ModalAdd: React.FC<ModalAddProps> = ({ showModal, setShowModal }) => {
                 />
                 <TERipple rippleColor="light" className="w-full">
                   <button
-                    onClick={() => {addTodo(task),setShowModal(false)}}
+                    onClick={() => {dispatch(addTodos(task)),setShowModal(false)}}
                     className=" mt-5 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
                     type="button"
                     style={{

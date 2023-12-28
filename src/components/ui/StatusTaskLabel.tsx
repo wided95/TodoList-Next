@@ -1,21 +1,21 @@
 import React, { LabelHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
+//allows for easy styling of the label based on its different states.
 const statusVariants = cva(
-  "flex items-center text-white font-inter text-l font-bold  rounded-full px-5 py-1",
+  "flex items-center justify-center text-white text-base font-inter font-medium rounded-full  py-1 w-24",
 
   {
     variants: {
       variant: {
-        active: "bg-custom3 text-white text-base font-medium",
-        pending: "bg-custm4 text-white text-base font-medium",
-        closed: "bg-custom5 text-white text-base font-medium",
+        active: "bg-custom3",
+        pending: "bg-custm4",
+        closed: "bg-custom5",
       },
       children: {
-        pending: "Pending",
-        active: "Active",
-        
-        closed: "Closed",
+        pending: "pending",
+        active: "active",
+        closed: "closed",
       },
     },
     defaultVariants: {
@@ -26,7 +26,10 @@ const statusVariants = cva(
 );
 export interface StatusTaskLabelProps
   extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "children">,
-    VariantProps<typeof statusVariants> {}
+    VariantProps<typeof statusVariants> {
+  variant?: "active" | "pending" | "closed";
+  children?: 'active' | 'pending' | 'closed';
+}
 
 const StatusTaskLabel: React.FC<StatusTaskLabelProps> = ({
   className,
@@ -36,7 +39,10 @@ const StatusTaskLabel: React.FC<StatusTaskLabelProps> = ({
   ...props
 }) => {
   return (
-    <label {...props} className={cn(statusVariants({ variant, className }))}>
+    <label
+      {...props}
+      className={cn(statusVariants({ variant, className }))}
+    >
       {children}
     </label>
   );
